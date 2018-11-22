@@ -1,0 +1,19 @@
+<div class="mt-5 d-flex justify-content-center">
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <input #movie_name matInput required placeholder="Movie Name">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <input #movie_genre matInput required placeholder="Movie Genre">
+    </mat-form-field>
+
+    <hr>
+
+    <div class="float-right">
+      <button mat-stroked-button color="primary" (click)="addMovie(movie_name.value,movie_genre.value)">Add Movie
+      </button>
+    </div>
+  </form>
+</div>
+
