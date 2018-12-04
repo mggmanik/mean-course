@@ -21,6 +21,14 @@ export class MovieService {
     return this.http.post<Movie>(this.baseUrl, movie, httpOptions);
   }
 
+  updateMovie(id: string, movie: Movie): Observable<Movie> {
+    return this.http.put<Movie>(`${this.baseUrl}/${id}`, movie, httpOptions);
+  }
+
+  getMovie(id: string): Observable<Movie> {
+    return this.http.get<Movie>(`${this.baseUrl}/${id}`);
+  }
+
   getMovies(): Observable<Movie[]> {
     return this.http.get<Movie[]>(this.baseUrl);
   }

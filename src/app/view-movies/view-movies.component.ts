@@ -11,21 +11,19 @@ export class ViewMoviesComponent implements OnInit {
 
   movies: Movie[] = [];
 
-  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'action'];
+  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'movie_edit', 'movie_delete'];
 
   constructor(private movieService: MovieService) {
   }
 
   ngOnInit() {
-    this.movieService.getMovies().subscribe(movies => {
-      console.log(this.movies = movies['movies']);
-    });
+    this.movieService.getMovies().subscribe(movies =>
+      this.movies = movies['movies']);
   }
 
   onDelete(id: string) {
     this.movieService.deleteMovie(id).subscribe(() => {
-      const updatedMovies = this.movies.filter(movie => movie._id !== id);
-      this.movies = updatedMovies;
+      this.movies = this.movies.filter(movie => movie._id !== id);
       console.log('Movie Deleted!');
     });
   }
