@@ -3,6 +3,7 @@ import {MovieService} from '../movie.service';
 import {Movie} from '../movie';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {mimeType} from './mime-type.validator';
 
 @Component({
   selector: 'app-main',
@@ -14,6 +15,7 @@ export class MainComponent implements OnInit {
   movie: Movie;
   private mode = 'add';
   private movieId: string;
+  imagePreview: string | ArrayBuffer;
   form: FormGroup;
 
   constructor(private movieService: MovieService, public route: ActivatedRoute) {
@@ -22,7 +24,12 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       'movie_name': new FormControl(null, {validators: [Validators.required, Validators.minLength(5)]}),
-      'movie_genre': new FormControl(null, {validators: [Validators.required]})
+      'movie_genre': new FormControl(null, {validators: [Validators.required]}),
+      'image': new FormControl(null,
+        {
+          validators: [Validators.required],
+          asyncValidators: [mimeType]
+        })
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -54,5 +61,16 @@ export class MainComponent implements OnInit {
       this.movieService.updateMovie(this.movieId, this.movie).subscribe(() => console.log('Movie Updated!'));
     }
     this.form.reset();
+  }
+
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image: file});
+    this.form.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 }
