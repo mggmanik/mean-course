@@ -11,7 +11,7 @@ export class ViewMoviesComponent implements OnInit {
 
   movies: Movie[] = [];
 
-  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'movie_edit', 'movie_delete'];
+  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image', 'movie_edit', 'movie_delete'];
 
   constructor(private movieService: MovieService) {
   }

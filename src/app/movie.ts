@@ -3,6 +3,7 @@ export class Movie {
   _id: string;
   movie_name: string;
   movie_genre: string;
+  image_path: string;
 
 
   constructor(movie_name: string, movie_genre: string) {

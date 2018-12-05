@@ -27,9 +27,11 @@ const storage = multer.diskStorage({
 });
 
 router.post("", multer({storage: storage}).single("image"), (req, res) => {
+  const url = req.protocol + '://' + req.get("host");
   const movie = new Movie({
     movie_name: req.body.movie_name,
-    movie_genre: req.body.movie_genre
+    movie_genre: req.body.movie_genre,
+    image_path: url + "/images/" + req.file.filename
   });
   movie.save()
     .then(() => {
