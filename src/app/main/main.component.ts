@@ -17,13 +17,16 @@ export class MainComponent implements OnInit {
   private movieId: string;
   imagePreview: string | ArrayBuffer;
   form: FormGroup;
+  isInEditMode = false;
 
   constructor(private movieService: MovieService, public route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.form = new FormGroup({
-      'movie_name': new FormControl(null, {validators: [Validators.required, Validators.minLength(5)]}),
+      'movie_name': new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(5)]
+      }),
       'movie_genre': new FormControl(null, {validators: [Validators.required]}),
       'image': new FormControl(null,
         {
@@ -40,7 +43,8 @@ export class MainComponent implements OnInit {
           this.movie = movie['movie'];
           this.form.setValue({
             'movie_name': this.movie.movie_name,
-            'movie_genre': this.movie.movie_genre
+            'movie_genre': this.movie.movie_genre,
+            'image': this.movie.image_path
           });
         });
       } else {
@@ -58,12 +62,15 @@ export class MainComponent implements OnInit {
     if (this.mode === 'add') {
       this.movieService.addMovie(this.movie, this.form.value.image).subscribe(() => console.log('Movie Added!'));
     } else {
-      this.movieService.updateMovie(this.movieId, this.movie).subscribe(() => console.log('Movie Updated!'));
+      this.movieService.updateMovie(this.movieId, this.movie, this.form.value.image).subscribe(() => console.log('Movie Updated!'));
     }
     this.form.reset();
   }
 
   onImagePicked(event: Event) {
+    if (this.mode === 'edit') {
+      this.isInEditMode = true;
+    }
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({image: file});
     this.form.get('image').updateValueAndValidity();

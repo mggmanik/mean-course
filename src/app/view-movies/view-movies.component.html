@@ -1,4 +1,4 @@
-<div class="mt-5 d-flex justify-content-center">
+<div class="mt-5 d-flex justify-content-center" *ngIf="movies.length>0">
   <table mat-table [dataSource]="movies" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.

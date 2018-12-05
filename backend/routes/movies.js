@@ -41,11 +41,17 @@ router.post("", multer({storage: storage}).single("image"), (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", multer({storage: storage}).single("image"), (req, res) => {
+  let imagePath = req.body.image_path;
+  if (req.file) {
+    const updatedUrl = req.protocol + '://' + req.get("host");
+    imagePath = updatedUrl + "/images/" + req.file.filename;
+  }
   const movie = new Movie({
     _id: req.params.id,
     movie_name: req.body.movie_name,
-    movie_genre: req.body.movie_genre
+    movie_genre: req.body.movie_genre,
+    image_path: imagePath
   });
   Movie.updateOne({_id: req.params.id}, movie).then(result => {
     console.log(result);

@@ -25,8 +25,17 @@ export class MovieService {
     return this.http.post<Movie>(this.baseUrl, movieData);
   }
 
-  updateMovie(id: string, movie: Movie): Observable<Movie> {
-    return this.http.put<Movie>(`${this.baseUrl}/${id}`, movie, httpOptions);
+  updateMovie(id: string, movie: Movie, image: File | string): Observable<Movie> {
+    let updatedMovieData: Movie | FormData;
+    if (typeof image === 'object') {
+      updatedMovieData = new FormData();
+      updatedMovieData.append('movie_name', movie.movie_name);
+      updatedMovieData.append('movie_genre', movie.movie_genre);
+      updatedMovieData.append('image', image, movie.movie_name);
+    } else {
+      updatedMovieData = movie;
+    }
+    return this.http.put<Movie>(`${this.baseUrl}/${id}`, updatedMovieData);
   }
 
   getMovie(id: string): Observable<Movie> {
