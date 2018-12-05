@@ -56,7 +56,7 @@ export class MainComponent implements OnInit {
     }
     this.movie = new Movie(this.form.value.movie_name, this.form.value.movie_genre);
     if (this.mode === 'add') {
-      this.movieService.addMovie(this.movie).subscribe(() => console.log('Movie Added!'));
+      this.movieService.addMovie(this.movie, this.form.value.image).subscribe(() => console.log('Movie Added!'));
     } else {
       this.movieService.updateMovie(this.movieId, this.movie).subscribe(() => console.log('Movie Updated!'));
     }

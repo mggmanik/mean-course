@@ -17,8 +17,12 @@ export class MovieService {
   constructor(private http: HttpClient) {
   }
 
-  addMovie(movie: Movie): Observable<Movie> {
-    return this.http.post<Movie>(this.baseUrl, movie, httpOptions);
+  addMovie(movie: Movie, image: File): Observable<Movie> {
+    const movieData = new FormData();
+    movieData.append('movie_name', movie.movie_name);
+    movieData.append('movie_genre', movie.movie_genre);
+    movieData.append('image', image, movie.movie_name);
+    return this.http.post<Movie>(this.baseUrl, movieData);
   }
 
   updateMovie(id: string, movie: Movie): Observable<Movie> {
