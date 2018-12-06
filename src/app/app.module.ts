@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatFormFieldModule} from '@angular/material/';
+import {MatFormFieldModule, MatPaginatorModule} from '@angular/material/';
 import {MatToolbarModule} from '@angular/material';
 import {HeaderComponent} from './header/header.component';
 import {MainComponent} from './main/main.component';
@@ -34,7 +34,8 @@ import {ViewMoviesComponent} from './view-movies/view-movies.component';
     MatInputModule,
     MatButtonModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

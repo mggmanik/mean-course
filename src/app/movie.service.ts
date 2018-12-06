@@ -38,12 +38,13 @@ export class MovieService {
     return this.http.put<Movie>(`${this.baseUrl}/${id}`, updatedMovieData);
   }
 
-  getMovie(id: string): Observable<Movie> {
-    return this.http.get<Movie>(`${this.baseUrl}/${id}`);
+  getMovie(id: string): Observable<{ movie: Movie }> {
+    return this.http.get<{ movie: Movie }>(`${this.baseUrl}/${id}`);
   }
 
-  getMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.baseUrl);
+  getMovies(moviesPerPage: number, currentPage: number): Observable<{ movies: Movie[], maxMovies: number }> {
+    const queryParams = `?pagesize=${moviesPerPage}&page=${currentPage}`;
+    return this.http.get<{ movies: Movie[], maxMovies: number }>(this.baseUrl + queryParams);
   }
 
   deleteMovie(id: string): Observable<Movie> {

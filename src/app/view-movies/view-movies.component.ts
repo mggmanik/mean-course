@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MovieService} from '../movie.service';
 import {Movie} from '../movie';
+import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-view-movies',
@@ -8,6 +9,11 @@ import {Movie} from '../movie';
   styleUrls: ['./view-movies.component.css']
 })
 export class ViewMoviesComponent implements OnInit {
+
+  totalMovies;
+  moviesPerPage = 2;
+  currentPage = 1;
+  pageSizeOptions = [1, 2, 3, 5];
 
   movies: Movie[] = [];
 
@@ -17,8 +23,18 @@ export class ViewMoviesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.movieService.getMovies().subscribe(movies =>
-      this.movies = movies['movies']);
+    this.movieService.getMovies(this.moviesPerPage, this.currentPage).subscribe(movies => {
+      this.movies = movies.movies;
+      this.totalMovies = movies.maxMovies;
+    });
+  }
+
+  onPageChange(pageData: PageEvent) {
+    this.currentPage = pageData.pageIndex + 1;
+    this.moviesPerPage = pageData.pageSize;
+    this.movieService.getMovies(this.moviesPerPage, this.currentPage).subscribe(movies => {
+      this.movies = movies.movies;
+    });
   }
 
   onDelete(id: string) {

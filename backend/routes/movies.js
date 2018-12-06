@@ -60,10 +60,23 @@ router.put("/:id", multer({storage: storage}).single("image"), (req, res) => {
 });
 
 router.get("", (req, res) => {
-  Movie.find().then(documents => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const movieQuery = Movie.find();
+  let fetchedMovies;
+  if (pageSize && currentPage) {
+    movieQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize)
+  }
+  movieQuery.then(documents => {
+    fetchedMovies = documents;
+    return Movie.count();
+  }).then(count => {
     res.status(200).json({
       message: "Movies fetched successfully!",
-      movies: documents
+      movies: fetchedMovies,
+      maxMovies: count
     });
   });
 });

@@ -44,3 +44,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
+<div *ngIf="movies.length>0">
+  <mat-paginator [length]="totalMovies" [pageSize]="moviesPerPage"
+                 [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
+</div>
