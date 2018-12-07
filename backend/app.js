@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const movieRoutes = require("./routes/movies");
-
+const userRoutes = require("./routes/users");
 const app = express();
 
 mongoose
@@ -28,5 +28,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/movie", movieRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;

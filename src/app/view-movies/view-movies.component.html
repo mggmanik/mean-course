@@ -46,5 +46,5 @@
 </div>
 <div *ngIf="movies.length>0">
   <mat-paginator [length]="totalMovies" [pageSize]="moviesPerPage"
-                 [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
+                 [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageChange($event)"></mat-paginator>
 </div>

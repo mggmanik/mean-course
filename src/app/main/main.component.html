@@ -2,6 +2,7 @@
   <form [formGroup]="form" (submit)="addMovie()" class="example-form">
     <mat-form-field class="example-full-width">
       <input
+        type="text"
         matInput
         placeholder="Movie Name"
         formControlName="movie_name">
@@ -9,6 +10,7 @@
 
     <mat-form-field class="example-full-width">
       <input
+        type="text"
         matInput
         placeholder="Movie Genre"
         formControlName="movie_genre">

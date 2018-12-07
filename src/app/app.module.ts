@@ -13,6 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {HttpClientModule} from '@angular/common/http';
 import {ViewMoviesComponent} from './view-movies/view-movies.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import {ViewMoviesComponent} from './view-movies/view-movies.component';
     AppComponent,
     HeaderComponent,
     MainComponent,
-    ViewMoviesComponent
+    ViewMoviesComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     FormsModule,
