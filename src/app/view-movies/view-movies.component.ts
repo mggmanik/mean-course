@@ -1,14 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MovieService} from '../movie.service';
 import {Movie} from '../movie';
 import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
+import {AuthService} from '../auth/auth.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-view-movies',
   templateUrl: './view-movies.component.html',
   styleUrls: ['./view-movies.component.css']
 })
-export class ViewMoviesComponent implements OnInit {
+export class ViewMoviesComponent implements OnInit, OnDestroy {
 
   totalMovies;
   moviesPerPage = 2;
@@ -17,9 +19,13 @@ export class ViewMoviesComponent implements OnInit {
 
   movies: Movie[] = [];
 
-  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image', 'movie_edit', 'movie_delete'];
+  userIsAuthenticated = false;
+  private authListenerStatus: Subscription;
 
-  constructor(private movieService: MovieService) {
+  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image', 'movie_edit', 'movie_delete'];
+  unAuthenticatedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image'];
+
+  constructor(private movieService: MovieService, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -27,6 +33,12 @@ export class ViewMoviesComponent implements OnInit {
       this.movies = movies.movies;
       this.totalMovies = movies.maxMovies;
     });
+    this.userIsAuthenticated = this.authService.getIsAuthenticated();
+    this.authListenerStatus = this.authService
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
   }
 
   onPageChange(pageData: PageEvent) {
@@ -42,5 +54,9 @@ export class ViewMoviesComponent implements OnInit {
       this.movies = this.movies.filter(movie => movie._id !== id);
       console.log('Movie Deleted!');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authListenerStatus.unsubscribe();
   }
 }

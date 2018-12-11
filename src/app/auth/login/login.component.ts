@@ -23,8 +23,6 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.authData = new AuthData(form.value.email, form.value.password);
-    this.authService.loginUser(this.authData).subscribe(result => {
-      console.log(result);
-    });
+    this.authService.loginUser(this.authData);
   }
 }

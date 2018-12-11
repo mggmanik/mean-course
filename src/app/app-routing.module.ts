@@ -6,9 +6,9 @@ import {LoginComponent} from './auth/login/login.component';
 import {SignupComponent} from './auth/signup/signup.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  {path: 'dashboard', component: MainComponent},
-  {path: 'view-movies', component: ViewMoviesComponent},
+  {path: '', redirectTo: 'view-movie', pathMatch: 'full'},
+  {path: 'view-movie', component: ViewMoviesComponent},
+  {path: 'add-movie', component: MainComponent},
   {path: 'edit/:movieId', component: MainComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signUp', component: SignupComponent}

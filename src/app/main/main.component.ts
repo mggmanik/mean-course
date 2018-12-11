@@ -64,7 +64,7 @@ export class MainComponent implements OnInit {
       this.movieService.updateMovie(this.movieId, this.movie, this.form.value.image).subscribe(() => console.log('Movie Updated!'));
     }
     this.form.reset();
-    this.router.navigateByUrl('/view-movies');
+    this.router.navigateByUrl('/view-movie');
 
   }
 

@@ -11,10 +11,11 @@ import {MainComponent} from './main/main.component';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ViewMoviesComponent} from './view-movies/view-movies.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
+import {LoginComponent} from './auth/login/login.component';
+import {SignupComponent} from './auth/signup/signup.component';
+import {AuthInterceptor} from './auth/auth-interceptor';
 
 
 @NgModule({
@@ -41,8 +42,9 @@ import { SignupComponent } from './auth/signup/signup.component';
     MatTableModule,
     MatPaginatorModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }

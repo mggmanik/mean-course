@@ -40,8 +40,16 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <div *ngIf="userIsAuthenticated">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </div>
+
+    <div *ngIf="!userIsAuthenticated">
+      <tr mat-header-row *matHeaderRowDef="unAuthenticatedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: unAuthenticatedColumns;"></tr>
+    </div>
+
   </table>
 </div>
 <div *ngIf="movies.length>0">
