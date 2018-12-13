@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MovieService} from '../movie.service';
 import {Movie} from '../movie';
-import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
+import {PageEvent} from '@angular/material';
 import {AuthService} from '../auth/auth.service';
 import {Subscription} from 'rxjs';
 
@@ -18,26 +18,28 @@ export class ViewMoviesComponent implements OnInit, OnDestroy {
   pageSizeOptions = [1, 2, 3, 5];
 
   movies: Movie[] = [];
+  private userId: string;
 
   userIsAuthenticated = false;
   private authListenerStatus: Subscription;
 
   displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image', 'movie_edit', 'movie_delete'];
-  unAuthenticatedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image'];
 
   constructor(private movieService: MovieService, private authService: AuthService) {
   }
 
   ngOnInit() {
     this.movieService.getMovies(this.moviesPerPage, this.currentPage).subscribe(movies => {
-      this.movies = movies.movies;
+      console.log(this.movies = movies.movies);
       this.totalMovies = movies.maxMovies;
     });
+    this.userId = this.authService.getUserId();
     this.userIsAuthenticated = this.authService.getIsAuthenticated();
     this.authListenerStatus = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
       });
   }
 

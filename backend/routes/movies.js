@@ -31,7 +31,8 @@ router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res
   const movie = new Movie({
     movie_name: req.body.movie_name,
     movie_genre: req.body.movie_genre,
-    image_path: url + "/images/" + req.file.filename
+    image_path: url + "/images/" + req.file.filename,
+    creator: req.userData.userId
   });
   movie.save()
     .then(() => {
@@ -51,11 +52,16 @@ router.put("/:id", checkAuth, multer({storage: storage}).single("image"), (req, 
     _id: req.params.id,
     movie_name: req.body.movie_name,
     movie_genre: req.body.movie_genre,
-    image_path: imagePath
+    image_path: imagePath,
+    creator: req.userData.userId
   });
-  Movie.updateOne({_id: req.params.id}, movie).then(result => {
+  Movie.updateOne({_id: req.params.id, creator: req.userData.userId}, movie).then(result => {
+    if (result.nModified > 0) {
+      res.status(200).json({message: "Update successful!"});
+    } else {
+      res.status(401).json({message: "Not Authorized!"});
+    }
     console.log(result);
-    res.status(200).json({message: "Update successful!"});
   });
 });
 
@@ -91,9 +97,13 @@ router.get("/:id", (req, res) => {
 });
 
 router.delete("/:id", checkAuth, (req, res) => {
-  Movie.deleteOne({_id: req.params.id}).then(result => {
+  Movie.deleteOne({_id: req.params.id, creator: req.userData.userId}).then(result => {
+    if (result.n > 0) {
+      res.status(200).json({message: "Movie Deleted !"});
+    } else {
+      res.status(401).json({message: "Not Authorized!"});
+    }
     console.log(result);
-    res.status(200).json({message: "Movie Deleted !"});
   });
 });
 
