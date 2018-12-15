@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const Movie = require("../models/movie");
 const checkAuth = require("../middleware/check-auth");
+// const passportAuth = require("../middleware/passport-setup")
 const router = express.Router();
 
 const MIME_TYPE_MAP = {

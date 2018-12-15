@@ -2,6 +2,7 @@ const path = require("path");
 const express = require('express');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const passport = require("passport");
 
 const movieRoutes = require("./routes/movies");
 const userRoutes = require("./routes/users");
@@ -16,6 +17,7 @@ mongoose
     console.log("Connection failed!");
   });
 
+app.use(passport.initialize());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use("/images", express.static(path.join("backend/images")));

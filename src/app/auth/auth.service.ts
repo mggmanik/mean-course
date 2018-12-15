@@ -59,6 +59,13 @@ export class AuthService {
       });
   }
 
+  googleLoginUser() {
+    return this.http.get<{ token: string, expiresIn: number, userId: string }>(`${this.baseUrl}/oauth/google/redirect`)
+      .subscribe(result => {
+        console.log(result.token);
+      });
+  }
+
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {

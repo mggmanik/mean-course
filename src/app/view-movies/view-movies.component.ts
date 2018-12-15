@@ -30,7 +30,7 @@ export class ViewMoviesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.movieService.getMovies(this.moviesPerPage, this.currentPage).subscribe(movies => {
-      console.log(this.movies = movies.movies);
+      this.movies = movies.movies;
       this.totalMovies = movies.maxMovies;
     });
     this.userId = this.authService.getUserId();
