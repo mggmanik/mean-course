@@ -18,8 +18,7 @@ passport.use(new GoogleStrategy({
 }, (accessToken, refreshToken, profile, done) => {
   const userData = {
     email: profile.emails[0].value,
-    userId: profile.id,
-    token: accessToken
+    userId: profile.id
   };
   done(null, userData);
 }));

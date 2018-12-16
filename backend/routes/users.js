@@ -64,12 +64,16 @@ router.get("/oauth/google/login", passportSetup.authenticate('google', {
   scope: ['profile', 'email']
 }));
 
-router.get("/oauth/google/redirect", passportSetup.authenticate('google'), (req, res) => {
-  const token = req.user.token;
-  // res.send(req.user.token);
-  res.status(200).json({
-    token: token
-  });
+router.get("/oauth/google/redirect", passportSetup.authenticate('google', {
+  failureRedirect: "/",
+  session: false
+}), (req, res) => {
+  const email = req.user.email;
+  const userId = req.user.userId;
+
+  const token = jwt.sign({email: email, userId: userId}, "secret_this_should_be_longer", {expiresIn: "1h"});
+
+  res.redirect(`http://localhost:4200?token=${token}&expiresIn=${3600}&userId=${userId}`);
 });
 
 module.exports = router;
