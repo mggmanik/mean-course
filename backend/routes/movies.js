@@ -1,8 +1,7 @@
 const express = require("express");
 const multer = require("multer");
-const Movie = require("../models/movie");
 const checkAuth = require("../middleware/check-auth");
-// const passportAuth = require("../middleware/passport-setup")
+const MovieController = require("../controllers/movie");
 const router = express.Router();
 
 const MIME_TYPE_MAP = {
@@ -27,111 +26,14 @@ const storage = multer.diskStorage({
   }
 });
 
-router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res) => {
-  const url = req.protocol + '://' + req.get("host");
-  const movie = new Movie({
-    movie_name: req.body.movie_name,
-    movie_genre: req.body.movie_genre,
-    image_path: url + "/images/" + req.file.filename,
-    creator: req.userData.userId
-  });
-  movie.save()
-    .then(() => {
-      res.status(201).json({
-        message: "Movie Added Successfully!"
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: "Creation of Movie Failed!"
-      });
-    });
-});
+router.post("", checkAuth, multer({storage: storage}).single("image"), MovieController.createMovie);
 
-router.put("/:id", checkAuth, multer({storage: storage}).single("image"), (req, res) => {
-  let imagePath = req.body.image_path;
-  if (req.file) {
-    const updatedUrl = req.protocol + '://' + req.get("host");
-    imagePath = updatedUrl + "/images/" + req.file.filename;
-  }
-  const movie = new Movie({
-    _id: req.params.id,
-    movie_name: req.body.movie_name,
-    movie_genre: req.body.movie_genre,
-    image_path: imagePath,
-    creator: req.userData.userId
-  });
-  Movie.updateOne({_id: req.params.id, creator: req.userData.userId}, movie)
-    .then(result => {
-      if (result.nModified > 0) {
-        res.status(200).json({message: "Update successful!"});
-      } else {
-        res.status(401).json({message: "Not Authorized!"});
-      }
-      console.log(result);
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: "Couldn't update Movie!"
-      });
-    });
-});
+router.put("/:id", checkAuth, multer({storage: storage}).single("image"), MovieController.updateMovie);
 
-router.get("", (req, res) => {
-  const pageSize = +req.query.pagesize;
-  const currentPage = +req.query.page;
-  const movieQuery = Movie.find();
-  let fetchedMovies;
-  if (pageSize && currentPage) {
-    movieQuery
-      .skip(pageSize * (currentPage - 1))
-      .limit(pageSize)
-  }
-  movieQuery.then(documents => {
-    fetchedMovies = documents;
-    return Movie.count();
-  }).then(count => {
-    res.status(200).json({
-      message: "Movies fetched successfully!",
-      movies: fetchedMovies,
-      maxMovies: count
-    })
-      .catch(err => {
-        res.status(500).json({
-          message: "Fetching Movies Failed"
-        })
-      });
-  });
-});
+router.get("", MovieController.getMovies);
 
-router.get("/:id", (req, res) => {
-  Movie.findById(req.params.id).then(document => {
-    res.status(200).json({
-      message: "Movie fetched successfully!",
-      movie: document
-    });
-  })
-    .catch(err => {
-      res.status(500).json({
-        message: "Fetching Movie Failed"
-      })
-    });
-  ;
-});
+router.get("/:id", MovieController.getMovie);
 
-router.delete("/:id", checkAuth, (req, res) => {
-  Movie.deleteOne({_id: req.params.id, creator: req.userData.userId}).then(result => {
-    if (result.n > 0) {
-      res.status(200).json({message: "Movie Deleted !"});
-    } else {
-      res.status(401).json({message: "Not Authorized!"});
-    }
-    console.log(result);
-  }).catch(err => {
-    res.status(500).json({
-      message: "Fetching Movies Failed"
-    });
-  });
-});
+router.delete("/:id", checkAuth, MovieController.deleteMovie);
 
 module.exports = router;
