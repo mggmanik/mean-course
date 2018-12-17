@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthService} from '../auth.service';
 import {AuthData} from '../../auth-data';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +13,7 @@ export class SignupComponent implements OnInit {
 
   authData: AuthData;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
@@ -23,8 +24,8 @@ export class SignupComponent implements OnInit {
       return;
     }
     this.authData = new AuthData(form.value.email, form.value.password);
-    this.authService.createUser(this.authData).subscribe(result => {
-      console.log(result);
+    this.authService.createUser(this.authData).subscribe(() => {
+      this.router.navigate(['/login']);
     });
   }
 

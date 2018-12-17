@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatFormFieldModule, MatPaginatorModule} from '@angular/material/';
+import {MatDialogModule, MatFormFieldModule, MatPaginatorModule} from '@angular/material/';
 import {MatToolbarModule} from '@angular/material';
 import {HeaderComponent} from './header/header.component';
 import {MainComponent} from './main/main.component';
@@ -16,6 +16,8 @@ import {ViewMoviesComponent} from './view-movies/view-movies.component';
 import {LoginComponent} from './auth/login/login.component';
 import {SignupComponent} from './auth/signup/signup.component';
 import {AuthInterceptor} from './auth/auth-interceptor';
+import {ErrorInterceptor} from './error-interceptor';
+import {ErrorComponent} from './error/error.component';
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import {AuthInterceptor} from './auth/auth-interceptor';
     MainComponent,
     ViewMoviesComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ErrorComponent
   ],
   imports: [
     FormsModule,
@@ -40,10 +43,15 @@ import {AuthInterceptor} from './auth/auth-interceptor';
     MatButtonModule,
     HttpClientModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
-  bootstrap: [AppComponent]
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 
 export class AppModule {

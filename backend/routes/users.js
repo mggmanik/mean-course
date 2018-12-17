@@ -21,7 +21,7 @@ router.post("/signup", (req, res) => {
           });
         }).catch(err => {
         res.status(500).json({
-          error: err
+          message: "Invalid Authentication Credentials!"
         });
       });
     });
@@ -55,7 +55,7 @@ router.post("/login", (req, res) => {
     });
   }).catch(err => {
     return res.status(401).json({
-      message: err
+      message: "Invalid Authentication Credentials!"
     });
   });
 });

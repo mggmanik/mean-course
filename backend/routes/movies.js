@@ -40,6 +40,11 @@ router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res
       res.status(201).json({
         message: "Movie Added Successfully!"
       });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Creation of Movie Failed!"
+      });
     });
 });
 
@@ -56,14 +61,20 @@ router.put("/:id", checkAuth, multer({storage: storage}).single("image"), (req, 
     image_path: imagePath,
     creator: req.userData.userId
   });
-  Movie.updateOne({_id: req.params.id, creator: req.userData.userId}, movie).then(result => {
-    if (result.nModified > 0) {
-      res.status(200).json({message: "Update successful!"});
-    } else {
-      res.status(401).json({message: "Not Authorized!"});
-    }
-    console.log(result);
-  });
+  Movie.updateOne({_id: req.params.id, creator: req.userData.userId}, movie)
+    .then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({message: "Update successful!"});
+      } else {
+        res.status(401).json({message: "Not Authorized!"});
+      }
+      console.log(result);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Couldn't update Movie!"
+      });
+    });
 });
 
 router.get("", (req, res) => {
@@ -84,7 +95,12 @@ router.get("", (req, res) => {
       message: "Movies fetched successfully!",
       movies: fetchedMovies,
       maxMovies: count
-    });
+    })
+      .catch(err => {
+        res.status(500).json({
+          message: "Fetching Movies Failed"
+        })
+      });
   });
 });
 
@@ -94,7 +110,13 @@ router.get("/:id", (req, res) => {
       message: "Movie fetched successfully!",
       movie: document
     });
-  });
+  })
+    .catch(err => {
+      res.status(500).json({
+        message: "Fetching Movie Failed"
+      })
+    });
+  ;
 });
 
 router.delete("/:id", checkAuth, (req, res) => {
@@ -105,6 +127,10 @@ router.delete("/:id", checkAuth, (req, res) => {
       res.status(401).json({message: "Not Authorized!"});
     }
     console.log(result);
+  }).catch(err => {
+    res.status(500).json({
+      message: "Fetching Movies Failed"
+    });
   });
 });
 
