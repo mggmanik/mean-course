@@ -2,17 +2,18 @@ import {Injectable} from '@angular/core';
 import {Movie} from './movie';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({'content-Type': 'application/json'})
 };
 
+const BACKEND_URL = environment.apiUrl + '/movie';
+
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-
-  baseUrl = 'http://localhost:3000/api/movie';
 
   constructor(private http: HttpClient) {
   }
@@ -22,7 +23,7 @@ export class MovieService {
     movieData.append('movie_name', movie.movie_name);
     movieData.append('movie_genre', movie.movie_genre);
     movieData.append('image', image, movie.movie_name);
-    return this.http.post<Movie>(this.baseUrl, movieData);
+    return this.http.post<Movie>(BACKEND_URL, movieData);
   }
 
   updateMovie(id: string, movie: Movie, image: File | string): Observable<Movie> {
@@ -35,19 +36,19 @@ export class MovieService {
     } else {
       updatedMovieData = movie;
     }
-    return this.http.put<Movie>(`${this.baseUrl}/${id}`, updatedMovieData);
+    return this.http.put<Movie>(`${BACKEND_URL}/${id}`, updatedMovieData);
   }
 
   getMovie(id: string): Observable<{ movie: Movie }> {
-    return this.http.get<{ movie: Movie }>(`${this.baseUrl}/${id}`);
+    return this.http.get<{ movie: Movie }>(`${BACKEND_URL}/${id}`);
   }
 
   getMovies(moviesPerPage: number, currentPage: number): Observable<{ movies: Movie[], maxMovies: number }> {
     const queryParams = `?pagesize=${moviesPerPage}&page=${currentPage}`;
-    return this.http.get<{ movies: Movie[], maxMovies: number }>(this.baseUrl + queryParams);
+    return this.http.get<{ movies: Movie[], maxMovies: number }>(BACKEND_URL + queryParams);
   }
 
   deleteMovie(id: string): Observable<Movie> {
-    return this.http.delete<Movie>(`${this.baseUrl}/${id}`, httpOptions);
+    return this.http.delete<Movie>(`${BACKEND_URL}/${id}`, httpOptions);
   }
 }

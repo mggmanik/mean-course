@@ -18,7 +18,7 @@ router.get("/oauth/google/redirect", passportSetup.authenticate('google', {
   const email = req.user.email;
   const userId = req.user.userId;
 
-  const token = jwt.sign({email: email, userId: userId}, "secret_this_should_be_longer", {expiresIn: "1h"});
+  const token = jwt.sign({email: email, userId: userId}, process.env.JWT_KEY, {expiresIn: "1h"});
 
   res.redirect(`http://localhost:4200?token=${token}&expiresIn=${3600}&userId=${userId}`);
 });

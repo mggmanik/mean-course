@@ -3,13 +3,15 @@ import {HttpClient} from '@angular/common/http';
 import {AuthData} from '../auth-data';
 import {Observable, Subject} from 'rxjs';
 import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  baseUrl = 'http://localhost:3000/api/user';
   private userId: string;
   private token: string;
   private tokenTimer: any;
@@ -36,11 +38,11 @@ export class AuthService {
   }
 
   createUser(authData: AuthData): Observable<AuthData> {
-    return this.http.post<AuthData>(`${this.baseUrl}/signup`, authData);
+    return this.http.post<AuthData>(`${BACKEND_URL}/signup`, authData);
   }
 
   loginUser(authData: AuthData) {
-    return this.http.post<{ token: string, expiresIn: number, userId: string }>(`${this.baseUrl}/login`, authData)
+    return this.http.post<{ token: string, expiresIn: number, userId: string }>(`${BACKEND_URL}/login`, authData)
       .subscribe(result => {
         const token = result.token;
         this.token = token;
