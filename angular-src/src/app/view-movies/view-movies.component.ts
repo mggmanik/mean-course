@@ -23,7 +23,7 @@ export class ViewMoviesComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerStatus: Subscription;
 
-  displayedColumns: string[] = ['id', 'movie_name', 'movie_genre', 'image', 'movie_edit', 'movie_delete'];
+  displayedColumns: string[] = ['movie_name', 'movie_genre', 'image', 'movie_edit', 'movie_delete'];
 
   constructor(private movieService: MovieService, private authService: AuthService) {
   }

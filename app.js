@@ -20,7 +20,8 @@ mongoose
 app.use(passport.initialize());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use("/images", express.static(path.join("backend/images")));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/images", express.static(path.join("images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -28,8 +29,6 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
   next();
 });
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/api/movie", movieRoutes);
 app.use("/api/user", userRoutes);
