@@ -12,6 +12,7 @@ router.post("/login", UserController.loginUser);
 router.get("/oauth/google/login", UserController.googleAuth);
 
 router.get("/oauth/google/redirect", passportSetup.authenticate('google', {
+  scope: ['email', 'profile'],
   failureRedirect: "/",
   session: false
 }), (req, res) => {
@@ -20,7 +21,7 @@ router.get("/oauth/google/redirect", passportSetup.authenticate('google', {
 
   const token = jwt.sign({email: email, userId: userId}, process.env.JWT_KEY, {expiresIn: "1h"});
 
-  res.redirect(`http://localhost:4200?token=${token}&expiresIn=${3600}&userId=${userId}`);
+  res.redirect(`http://localhost:8080?token=${token}&expiresIn=${3600}&userId=${userId}`);
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-<div class="mt-5 d-flex justify-content-center" *ngIf="movies.length>0">
+<div class="mt-5 d-flex justify-content-center" *ngIf="movies.length>0; else empty">
   <table mat-table [dataSource]="movies" class="mat-elevation-z8">
 
     <ng-container matColumnDef="id">
@@ -50,4 +50,8 @@
 <div *ngIf="movies.length>0">
   <mat-paginator [length]="totalMovies" [pageSize]="moviesPerPage"
                  [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageChange($event)"></mat-paginator>
+</div>
+
+<div class="mt-5 d-flex justify-content-center" #empty>
+  <p>No Movies to Display!</p>
 </div>
