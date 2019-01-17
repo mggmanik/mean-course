@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+
+  <div>
+    <button *ngIf="userIsAuthenticated" mat-button routerLink="/add-movie">Add Movie</button>
+  </div>
+  <div>
+    <button *ngIf="!userIsAuthenticated" mat-button class="m-2" routerLink="/auth/login">Login</button>
+    <button *ngIf="!userIsAuthenticated" mat-button class="m-2" routerLink="/auth/signUp">Sign Up</button>
+    <button mat-button class="m-2" routerLink="/view-movie">Movies</button>
+    <button *ngIf="userIsAuthenticated" mat-button class="m-2" (click)="onLogout()">Logout</button>
+  </div>
+
+  <form class="form-inline my-lg-0 ml-auto">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+  </form>
+
+</mat-toolbar>

@@ -1,0 +1,33 @@
+<div class="mt-5 d-flex justify-content-center">
+  <form (submit)="onSignUp(singUpForm)" #singUpForm="ngForm" class="example-form">
+    <mat-form-field class="example-full-width">
+      <input
+        required email
+        name="email"
+        type="email"
+        ngModel
+        #emailInput="ngModel"
+        matInput
+        placeholder="E-Mail">
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <input
+        required
+        name="password"
+        type="password"
+        ngModel
+        #passwordInput="ngModel"
+        matInput
+        placeholder="Password">
+      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password!</mat-error>
+    </mat-form-field>
+
+    <hr>
+
+    <div class="float-right">
+      <button mat-raised-button color="primary" type="submit">Sign Up</button>
+    </div>
+  </form>
+</div>
